@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/github/rmccullagh/weather-api/graph/badge.svg?token=KUWBFQCVBX)](https://codecov.io/github/rmccullagh/weather-api)
+
 # Weather API
 An HTTP server that serves the forecasted weather. Quick start:
 
