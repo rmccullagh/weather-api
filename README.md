@@ -1,9 +1,13 @@
 # Weather API
 An HTTP server that serves the forecasted weather. Quick start:
 
+
 ```bash
 go run main.go
 ```
+
+![Screenshot of terminal output when running go run main.go](assets/terminal.png "Optional title text")
+
 
 ## Documentation
 The API is documented in Swagger. After starting the server, open this link in your browser:
@@ -55,3 +59,7 @@ make coverage
 2. Returns the short forecast for that area for Today
 3. Returns a characterization of whether the temperature is hot, cold, or moderate
 4. Use the National Weather Service API Web Service as a data source.
+
+
+## TODO
+1. Cache responses to decrease latency of API for known responses
