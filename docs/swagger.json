@@ -1,0 +1,94 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is an HTTP server that serves the forecasted weather",
+        "title": "Weather API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "paths": {
+        "/v1/forecasts/{latitude}/{longitude}": {
+            "get": {
+                "description": "Get Forecast By Coordinates",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Returns the forecasted weather by latitude and longitude coordinates",
+                "operationId": "get-forecast-by-coordinates",
+                "parameters": [
+                    {
+                        "type": "number",
+                        "format": "float",
+                        "description": "The latitude of the desired location  (e.g. 39.7456)",
+                        "name": "latitude",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "number",
+                        "format": "flaot",
+                        "description": "The longitude of the desired location  (e.g. -97.0892)",
+                        "name": "longitude",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Forecast"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/models.APIError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.APIError": {
+            "type": "object",
+            "properties": {
+                "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Characterization": {
+            "type": "string",
+            "enum": [
+                "hot",
+                "cold",
+                "moderate",
+                "unknown "
+            ],
+            "x-enum-varnames": [
+                "Hot",
+                "Cold",
+                "Moderate",
+                "Unknown"
+            ]
+        },
+        "models.Forecast": {
+            "type": "object",
+            "properties": {
+                "forecast_daily": {
+                    "type": "string"
+                },
+                "temperature": {
+                    "type": "integer"
+                },
+                "temperature_characterization": {
+                    "$ref": "#/definitions/models.Characterization"
+                }
+            }
+        }
+    }
+}

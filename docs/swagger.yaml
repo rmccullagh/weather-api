@@ -1,0 +1,65 @@
+basePath: /
+definitions:
+  models.APIError:
+    properties:
+      error:
+        type: string
+    type: object
+  models.Characterization:
+    enum:
+    - hot
+    - cold
+    - moderate
+    - 'unknown '
+    type: string
+    x-enum-varnames:
+    - Hot
+    - Cold
+    - Moderate
+    - Unknown
+  models.Forecast:
+    properties:
+      forecast_daily:
+        type: string
+      temperature:
+        type: integer
+      temperature_characterization:
+        $ref: '#/definitions/models.Characterization'
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is an HTTP server that serves the forecasted weather
+  title: Weather API
+  version: "1.0"
+paths:
+  /v1/forecasts/{latitude}/{longitude}:
+    get:
+      description: Get Forecast By Coordinates
+      operationId: get-forecast-by-coordinates
+      parameters:
+      - description: The latitude of the desired location  (e.g. 39.7456)
+        format: float
+        in: path
+        name: latitude
+        required: true
+        type: number
+      - description: The longitude of the desired location  (e.g. -97.0892)
+        format: flaot
+        in: path
+        name: longitude
+        required: true
+        type: number
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Forecast'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.APIError'
+      summary: Returns the forecasted weather by latitude and longitude coordinates
+swagger: "2.0"
