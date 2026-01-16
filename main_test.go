@@ -12,8 +12,6 @@ import (
 
 type roundTripperFunc func(*http.Request) (*http.Response, error)
 
-func (f roundTripperFunc) RoundTrip(req *http.Request) (*http.Response, error) { return f(req) }
-
 func TestGetForecast_Success(t *testing.T) {
 	orig := http.DefaultTransport
 	defer func() { http.DefaultTransport = orig }()
