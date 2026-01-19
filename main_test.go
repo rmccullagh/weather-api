@@ -45,3 +45,21 @@ func TestGetForecast_Success(t *testing.T) {
 		t.Fatalf("unexpected body: %s", body)
 	}
 }
+
+func TestRootRedirect(t *testing.T) {
+	router := chi.NewRouter()
+	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/swagger/index.html", http.StatusTemporaryRedirect)
+	})
+
+	req := httptest.NewRequest("GET", "/", nil)
+	rr := httptest.NewRecorder()
+	router.ServeHTTP(rr, req)
+
+	if rr.Code != http.StatusTemporaryRedirect {
+		t.Fatalf("status: got %d want %d", rr.Code, http.StatusTemporaryRedirect)
+	}
+	if loc := rr.Header().Get("Location"); loc != "/swagger/index.html" {
+		t.Fatalf("location header: got %q want %q", loc, "/swagger/index.html")
+	}
+}

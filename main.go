@@ -34,7 +34,7 @@ func GetForecast(w http.ResponseWriter, r *http.Request) {
 	forecast, err := client.GetForecast(latitude, longitude)
 
 	if err != nil {
-		w.WriteHeader(500)
+		w.WriteHeader(http.StatusInternalServerError)
 		utils.JSONResponse(w, models.APIError{Message: err.Error()})
 		return
 	}
@@ -51,6 +51,11 @@ func GetForecast(w http.ResponseWriter, r *http.Request) {
 func main() {
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
+
+	// Redirect root to swagger docs
+	router.Get("/", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/swagger/index.html", http.StatusTemporaryRedirect)
+	})
 
 	router.Route("/v1", func(r chi.Router) {
 		r.Get("/forecasts/{latitude}/{longitude}", GetForecast)
