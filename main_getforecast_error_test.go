@@ -7,8 +7,6 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
-
-	"github.com/go-chi/chi/v5"
 )
 
 func (f roundTripperFunc) RoundTrip(req *http.Request) (*http.Response, error) { return f(req) }
@@ -66,8 +64,7 @@ func TestGetForecast_ErrorConditions(t *testing.T) {
 			http.DefaultTransport = tc.transport
 			defer func() { http.DefaultTransport = orig }()
 
-			router := chi.NewRouter()
-			router.Get("/v1/forecasts/{latitude}/{longitude}", GetForecast)
+			router := GetRouter()
 
 			req := httptest.NewRequest("GET", "/v1/forecasts/1/2", nil)
 			rr := httptest.NewRecorder()

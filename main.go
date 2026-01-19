@@ -52,16 +52,7 @@ func SwaggerHandler() http.HandlerFunc {
 	)
 }
 
-// @title Weather API
-// @version 1.0
-// @description This is an HTTP server that serves the forecasted weather
-// @title Weather API
-// @version 1.0
-// @description This is an HTTP server that serves the forecasted weather
-
-// @host localhost:8080
-// @BasePath /
-func main() {
+func GetRouter() *chi.Mux {
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
 
@@ -73,6 +64,21 @@ func main() {
 	})
 
 	router.Get("/swagger/*", SwaggerHandler())
+
+	return router
+}
+
+// @title Weather API
+// @version 1.0
+// @description This is an HTTP server that serves the forecasted weather
+// @title Weather API
+// @version 1.0
+// @description This is an HTTP server that serves the forecasted weather
+
+// @host localhost:8080
+// @BasePath /
+func main() {
+	router := GetRouter()
 
 	log.Println("Go to http://localhost:8080")
 
