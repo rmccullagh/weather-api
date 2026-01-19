@@ -6,8 +6,6 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
-
-	"github.com/go-chi/chi/v5"
 )
 
 type roundTripperFunc func(*http.Request) (*http.Response, error)
@@ -29,8 +27,7 @@ func TestGetForecast_Success(t *testing.T) {
 		}
 	})
 
-	router := chi.NewRouter()
-	router.Get("/v1/forecasts/{latitude}/{longitude}", GetForecast)
+	router := GetRouter()
 
 	req := httptest.NewRequest("GET", "/v1/forecasts/1/2", nil)
 	rr := httptest.NewRecorder()
@@ -47,8 +44,7 @@ func TestGetForecast_Success(t *testing.T) {
 }
 
 func TestRootRedirect(t *testing.T) {
-	router := chi.NewRouter()
-	router.Get("/", RedirectRootToSwagger)
+	router := GetRouter()
 
 	req := httptest.NewRequest("GET", "/", nil)
 	rr := httptest.NewRecorder()
@@ -63,11 +59,11 @@ func TestRootRedirect(t *testing.T) {
 }
 
 func TestSwaggerHandler(t *testing.T) {
-	h := SwaggerHandler()
+	router := GetRouter()
 	req := httptest.NewRequest("GET", "/swagger/", nil)
 	rr := httptest.NewRecorder()
 
-	h.ServeHTTP(rr, req)
+	router.ServeHTTP(rr, req)
 
 	if rr.Code < 200 || rr.Code >= 400 {
 		t.Fatalf("unexpected status code: %d", rr.Code)
