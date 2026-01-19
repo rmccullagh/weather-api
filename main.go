@@ -34,7 +34,7 @@ func GetForecast(w http.ResponseWriter, r *http.Request) {
 	forecast, err := client.GetForecast(latitude, longitude)
 
 	if err != nil {
-		w.WriteHeader(500)
+		w.WriteHeader(http.StatusInternalServerError)
 		utils.JSONResponse(w, models.APIError{Message: err.Error()})
 		return
 	}
@@ -42,6 +42,19 @@ func GetForecast(w http.ResponseWriter, r *http.Request) {
 	utils.JSONResponse(w, forecast)
 }
 
+func RedirectRootToSwagger(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "/swagger/index.html", http.StatusTemporaryRedirect)
+}
+
+func SwaggerHandler() http.HandlerFunc {
+	return httpSwagger.Handler(
+		httpSwagger.URL("http://localhost:8080/swagger/doc.json"), // The url pointing to API definition
+	)
+}
+
+// @title Weather API
+// @version 1.0
+// @description This is an HTTP server that serves the forecasted weather
 // @title Weather API
 // @version 1.0
 // @description This is an HTTP server that serves the forecasted weather
@@ -52,13 +65,14 @@ func main() {
 	router := chi.NewRouter()
 	router.Use(middleware.Logger)
 
+	// Redirect root to swagger docs
+	router.Get("/", RedirectRootToSwagger)
+
 	router.Route("/v1", func(r chi.Router) {
 		r.Get("/forecasts/{latitude}/{longitude}", GetForecast)
 	})
 
-	router.Get("/swagger/*", httpSwagger.Handler(
-		httpSwagger.URL("http://localhost:8080/swagger/doc.json"), //The url pointing to API definition
-	))
+	router.Get("/swagger/*", SwaggerHandler())
 
 	log.Println("Go to http://localhost:8080")
 

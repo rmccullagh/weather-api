@@ -8,5 +8,5 @@ run:
 docs:
 	~/go/bin/swag init
 all:
-	make run
 	make docs
+	make run

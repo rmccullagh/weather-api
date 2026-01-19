@@ -8,7 +8,7 @@ An HTTP server that serves the forecasted weather. Quick start:
 go run main.go
 ```
 
-![Screenshot of terminal output when running go run main.go](assets/terminal.png "Optional title text")
+![Screenshot of terminal output when running go run main.go](assets/terminal.png "Output of running go run main.go")
 
 
 ## Documentation
@@ -17,6 +17,9 @@ The API is documented in Swagger. After starting the server, open this link in y
 ```
 http://localhost:8080/swagger/index.html
 ```
+
+![Screenshot of Swagger UI](assets/swagger.png "Swagger UI screenshot")
+
 
 ## Examples
 
